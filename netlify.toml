@@ -10,6 +10,12 @@
 [functions."run_manager"]
   timeout = 26
 
+[functions."agent_report"]
+  timeout = 26
+
+[functions."weekly_report"]
+  timeout = 26
+
 # API routes → serverless functions
 [[redirects]]
   from   = "/api/run"
@@ -19,6 +25,16 @@
 [[redirects]]
   from   = "/api/manager"
   to     = "/.netlify/functions/run_manager"
+  status = 200
+
+[[redirects]]
+  from   = "/api/report"
+  to     = "/.netlify/functions/agent_report"
+  status = 200
+
+[[redirects]]
+  from   = "/api/weekly"
+  to     = "/.netlify/functions/weekly_report"
   status = 200
 
 # SPA fallback

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Silver Team — Agent Manager</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a14;--bg2:#11111e;--bg3:#181828;
+  --border:#2a2a40;--border2:#3a3a55;
+  --text:#e8e8f0;--text2:#9898b8;--text3:#5858785;
+  --accent:#7c6ff7;--accent2:#a78bfa;--accent3:#c4b5fd;
+  --green:#22c55e;--red:#ef4444;--orange:#f59e0b;--blue:#3b82f6;
+}
+html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* LAYOUT */
+.app{display:flex;flex-direction:column;min-height:100vh}
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 1.5rem;height:60px;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
+.logo{font-size:1.25rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.logo span{font-size:.75rem;font-weight:400;color:var(--text2);-webkit-text-fill-color:var(--text2)}
+.header-spacer{flex:1}
+.status-pill{display:flex;align-items:center;gap:.4rem;padding:.25rem .75rem;border-radius:999px;font-size:.75rem;font-weight:600;background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.status-pill.warn{background:rgba(245,158,11,.12);color:var(--orange);border-color:rgba(245,158,11,.2)}
+.status-dot{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.main{flex:1;max-width:1400px;width:100%;margin:0 auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem}
+
+/* MANAGER CONSOLE */
+.manager-bar{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start}
+.manager-icon{font-size:2rem;flex-shrink:0;margin-top:.1rem}
+.manager-input-wrap{flex:1}
+.manager-label{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin-bottom:.5rem}
+.manager-input{width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:.65rem 1rem;font-size:.95rem;font-family:inherit;resize:none;min-height:48px;max-height:120px;transition:border-color .2s}
+.manager-input:focus{outline:none;border-color:var(--accent)}
+.manager-input::placeholder{color:var(--text2)}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.25rem;border-radius:8px;font-size:.875rem;font-weight:600;cursor:pointer;transition:all .15s;border:none;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text);background:var(--bg3)}
+.btn-sm{padding:.4rem .85rem;font-size:.8rem}
+
+/* SECTION */
+.section-header{display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text2)}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;font-size:.7rem;font-weight:700;background:var(--bg3);color:var(--text2)}
+
+/* AGENT GRID */
+.agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.agent-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;flex-direction:column;gap:.85rem;transition:border-color .2s,transform .15s;cursor:default;position:relative;overflow:hidden}
+.agent-card::before{content:'';position:absolute;inset:0;border-radius:12px;opacity:0;transition:opacity .2s;pointer-events:none}
+.agent-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.agent-card:hover::before{opacity:1}
+.agent-top{display:flex;align-items:flex-start;gap:.75rem}
+.agent-emoji{font-size:2rem;line-height:1;flex-shrink:0}
+.agent-info{flex:1;min-width:0}
+.agent-name{font-size:1rem;font-weight:700}
+.agent-role{font-size:.78rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.agent-status{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:999px;margin-left:auto;flex-shrink:0}
+.agent-status.active{background:rgba(34,197,94,.12);color:var(--green)}
+.agent-status.busy{background:rgba(245,158,11,.12);color:var(--orange)}
+.agent-status.inactive{background:rgba(239,68,68,.12);color:var(--red)}
+.agent-skills{display:flex;flex-wrap:wrap;gap:.3rem}
+.skill-tag{font-size:.68rem;padding:.15rem .5rem;border-radius:4px;background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.agent-actions{display:flex;gap:.5rem;margin-top:auto}
+.btn-agent{flex:1;padding:.5rem;font-size:.78rem;font-weight:600;border-radius:7px;cursor:pointer;transition:all .15s;border:1px solid var(--border2);background:var(--bg3);color:var(--text)}
+.btn-agent:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-agent:disabled{opacity:.5;cursor:not-allowed}
+
+/* RESULT PANEL */
+.result-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:none}
+.result-panel.visible{display:block}
+.result-header{padding:.85rem 1.25rem;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.result-agent-name{font-weight:700;font-size:.95rem}
+.result-task-text{font-size:.78rem;color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.result-meta{font-size:.7rem;color:var(--text2);white-space:nowrap}
+.result-body{padding:1.25rem;font-size:.9rem;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:500px;overflow-y:auto}
+.result-body h1,.result-body h2,.result-body h3{margin:.75em 0 .4em;font-size:1em;font-weight:700}
+.result-body strong{font-weight:700}
+.result-body ul,.result-body ol{padding-left:1.25em;margin:.4em 0}
+
+/* ACTIVITY LOG */
+.activity-log{display:flex;flex-direction:column;gap:.4rem;max-height:260px;overflow-y:auto}
+.activity-item{display:flex;align-items:flex-start;gap:.65rem;padding:.6rem .85rem;border-radius:8px;background:var(--bg2);border:1px solid var(--border);font-size:.8rem}
+.activity-emoji{flex-shrink:0;font-size:1rem}
+.activity-content{flex:1;min-width:0}
+.activity-title{font-weight:600;display:flex;align-items:center;gap:.4rem}
+.activity-task{color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:.1rem}
+.activity-time{color:var(--text2);font-size:.7rem;flex-shrink:0}
+.activity-ok{color:var(--green)}
+.activity-err{color:var(--red)}
+.activity-pending{color:var(--orange)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:14px;width:100%;max-width:560px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal-head{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.modal-title{font-weight:700;font-size:1.05rem;flex:1}
+.modal-close{background:none;border:none;color:var(--text2);font-size:1.25rem;cursor:pointer;padding:.25rem;border-radius:6px;line-height:1;transition:color .15s}
+.modal-close:hover{color:var(--text)}
+.modal-body{padding:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.75rem}
+label{font-size:.8rem;font-weight:600;color:var(--text2);display:block;margin-bottom:.35rem}
+textarea,input[type=text]{width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:.7rem 1rem;font-size:.9rem;font-family:inherit;transition:border-color .2s}
+textarea:focus,input[type=text]:focus{outline:none;border-color:var(--accent)}
+textarea{resize:vertical;min-height:100px}
+.modal-agent-info{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;background:var(--bg3);border-radius:8px;border:1px solid var(--border)}
+
+/* LOADER */
+.loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* NO API KEY BANNER */
+.api-banner{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(239,68,68,.12));border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:.75rem;font-size:.85rem}
+.api-banner.hidden{display:none}
+.api-banner-icon{font-size:1.25rem;flex-shrink:0}
+.api-banner a{color:var(--accent2);text-decoration:none;font-weight:600}
+.api-banner a:hover{text-decoration:underline}
+
+/* EMPTY LOG */
+.empty-state{text-align:center;padding:2rem;color:var(--text2);font-size:.85rem}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .manager-bar{flex-direction:column}
+  .main{padding:1rem}
+  header{padding:0 1rem}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<header>
+  <div class="logo">⚡ Silver Team <span>Agent Manager</span></div>
+  <div class="header-spacer"></div>
+  <div id="headerStatus" class="status-pill warn">
+    <span class="status-dot"></span>
+    <span id="headerStatusText">Chargement…</span>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- API KEY BANNER -->
+  <div id="apiBanner" class="api-banner hidden">
+    <div class="api-banner-icon">⚠️</div>
+    <div>
+      <strong>Clé API manquante.</strong> Pour activer les agents, ajoute
+      <code>ANTHROPIC_API_KEY</code> dans
+      <a href="https://app.netlify.com" target="_blank" rel="noopener">Netlify → Site settings → Environment variables</a>,
+      puis redéploie le site.
+    </div>
+  </div>
+
+  <!-- MANAGER CONSOLE -->
+  <div>
+    <div class="section-header" style="margin-bottom:.75rem">
+      <span class="section-title">Manager Général</span>
+    </div>
+    <div class="manager-bar">
+      <div class="manager-icon">🧠</div>
+      <div class="manager-input-wrap">
+        <div class="manager-label">Confie une mission à toute l'équipe</div>
+        <textarea id="managerInput" class="manager-input" rows="2"
+          placeholder="Ex: Planifie la stratégie social media pour le lancement de notre nouveau produit en juin…"></textarea>
+      </div>
+      <button id="managerBtn" class="btn btn-primary" onclick="runManager()">
+        <span id="managerBtnText">Envoyer</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MANAGER RESULT -->
+  <div id="managerResult" class="result-panel">
+    <div class="result-header">
+      <span style="font-size:1.2rem">🧠</span>
+      <span class="result-agent-name">Manager Général</span>
+      <span id="managerResultTask" class="result-task-text"></span>
+      <span id="managerResultMeta" class="result-meta"></span>
+    </div>
+    <div id="managerResultBody" class="result-body"></div>
+  </div>
+
+  <!-- AGENT GRID -->
+  <div>
+    <div class="section-header" style="margin-bottom:.75rem">
+      <span class="section-title">L'Équipe</span>
+      <span id="agentCount" class="badge">0</span>
+    </div>
+    <div id="agentsGrid" class="agents-grid">
+      <!-- populated by JS -->
+      <div class="agent-card" style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text2)">
+        <div class="loader" style="margin:0 auto 1rem"></div>Chargement des agents…
+      </div>
+    </div>
+  </div>
+
+  <!-- LAST RESULT -->
+  <div id="agentResult" class="result-panel">
+    <div class="result-header">
+      <span id="agentResultEmoji" style="font-size:1.2rem">🤖</span>
+      <span id="agentResultName" class="result-agent-name"></span>
+      <span id="agentResultTask" class="result-task-text"></span>
+      <span id="agentResultMeta" class="result-meta"></span>
+    </div>
+    <div id="agentResultBody" class="result-body"></div>
+  </div>
+
+  <!-- ACTIVITY -->
+  <div>
+    <div class="section-header" style="margin-bottom:.75rem">
+      <span class="section-title">Activité récente</span>
+      <button class="btn btn-ghost btn-sm" onclick="clearLog()">Effacer</button>
+    </div>
+    <div id="activityLog" class="activity-log">
+      <div class="empty-state">Aucune activité pour l'instant. Lance une tâche pour démarrer !</div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- TASK MODAL -->
+<div id="taskModal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <div id="modalAgentInfo" class="modal-agent-info" style="flex:1;margin:0;padding:.5rem .75rem;background:none;border:none">
+        <span id="modalEmoji" style="font-size:1.5rem">🤖</span>
+        <div>
+          <div id="modalName" style="font-weight:700"></div>
+          <div id="modalRole" style="font-size:.78rem;color:var(--text2)"></div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <label for="taskInput">Quelle tâche confies-tu à cet agent ?</label>
+        <textarea id="taskInput" placeholder="Sois précis : contexte, objectif, format de réponse attendu…" rows="4"></textarea>
+      </div>
+      <div id="modalSkills" class="agent-skills"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Annuler</button>
+      <button id="runTaskBtn" class="btn btn-primary" onclick="submitTask()">
+        <span id="runTaskBtnText">Exécuter</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────────────────────────
+let agents = [];
+let currentAgent = null;
+let activityItems = [];
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    const res = await fetch('/api/agents');
+    const data = await res.json();
+    agents = data.agents || [];
+
+    document.getElementById('agentCount').textContent = agents.length;
+    renderAgents(agents);
+
+    const pill = document.getElementById('headerStatus');
+    const pillText = document.getElementById('headerStatusText');
+
+    if (!data.api_key_configured) {
+      document.getElementById('apiBanner').classList.remove('hidden');
+      pill.classList.add('warn');
+      pill.classList.remove('');
+      pillText.textContent = `${agents.length} agents — API non configurée`;
+    } else {
+      pill.classList.remove('warn');
+      pillText.textContent = `${agents.length} agents actifs`;
+    }
+  } catch (e) {
+    document.getElementById('agentsGrid').innerHTML =
+      `<div class="agent-card" style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--red)">
+        ❌ Impossible de charger les agents.<br><small>${e.message}</small>
+      </div>`;
+  }
+}
+
+// ─── Render agents ────────────────────────────────────────────────────────────
+function renderAgents(list) {
+  if (!list.length) {
+    document.getElementById('agentsGrid').innerHTML =
+      '<div class="empty-state">Aucun agent configuré.</div>';
+    return;
+  }
+  document.getElementById('agentsGrid').innerHTML = list.map(a => {
+    const skills = (a.skills || []).slice(0, 4).map(s =>
+      `<span class="skill-tag">${s}</span>`).join('');
+    const status = a.status || 'active';
+    return `
+    <div class="agent-card" id="card-${a.id}">
+      <div class="agent-top">
+        <div class="agent-emoji">${a.emoji || '🤖'}</div>
+        <div class="agent-info">
+          <div class="agent-name">${a.name}</div>
+          <div class="agent-role">${a.role}</div>
+        </div>
+        <span class="agent-status ${status}">● ${status}</span>
+      </div>
+      <div class="agent-skills">${skills}</div>
+      <div class="agent-actions">
+        <button class="btn-agent" onclick="openModal('${a.id}')">▶ Lancer une tâche</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── Modal ────────────────────────────────────────────────────────────────────
+function openModal(agentId) {
+  currentAgent = agents.find(a => a.id === agentId);
+  if (!currentAgent) return;
+  document.getElementById('modalEmoji').textContent = currentAgent.emoji || '🤖';
+  document.getElementById('modalName').textContent = currentAgent.name;
+  document.getElementById('modalRole').textContent = currentAgent.role;
+  document.getElementById('taskInput').value = '';
+  document.getElementById('modalSkills').innerHTML = (currentAgent.skills || [])
+    .map(s => `<span class="skill-tag">${s}</span>`).join('');
+  document.getElementById('taskModal').classList.add('open');
+  setTimeout(() => document.getElementById('taskInput').focus(), 100);
+}
+
+function closeModal() {
+  document.getElementById('taskModal').classList.remove('open');
+  currentAgent = null;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && e.ctrlKey && document.getElementById('taskModal').classList.contains('open')) {
+    submitTask();
+  }
+});
+
+// ─── Submit task ──────────────────────────────────────────────────────────────
+async function submitTask() {
+  if (!currentAgent) return;
+  const task = document.getElementById('taskInput').value.trim();
+  if (!task) { document.getElementById('taskInput').focus(); return; }
+
+  const btn = document.getElementById('runTaskBtn');
+  const btnText = document.getElementById('runTaskBtnText');
+  btn.disabled = true;
+  btnText.innerHTML = '<span class="loader"></span> En cours…';
+
+  // Update card status
+  const card = document.getElementById(`card-${currentAgent.id}`);
+  if (card) card.querySelector('.agent-status').className = 'agent-status busy';
+
+  addActivityItem(currentAgent.emoji, currentAgent.name, task, 'pending', null);
+  closeModal();
+
+  try {
+    const res = await fetch('/api/run', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({agent_id: currentAgent.id, task}),
+    });
+    const data = await res.json();
+
+    if (data.error) throw new Error(data.error);
+
+    showAgentResult(currentAgent, task, data);
+    updateLastActivity(currentAgent.emoji, currentAgent.name, task, true, data.response_time_ms);
+
+    // Restore card
+    if (card) card.querySelector('.agent-status').className = 'agent-status active';
+  } catch (e) {
+    updateLastActivity(currentAgent?.emoji || '🤖', currentAgent?.name || 'Agent', task, false, null, e.message);
+    if (card) card.querySelector('.agent-status').className = 'agent-status active';
+  } finally {
+    btn.disabled = false;
+    btnText.textContent = 'Exécuter';
+  }
+}
+
+// ─── Manager ──────────────────────────────────────────────────────────────────
+async function runManager() {
+  const task = document.getElementById('managerInput').value.trim();
+  if (!task) { document.getElementById('managerInput').focus(); return; }
+
+  const btn = document.getElementById('managerBtn');
+  const btnText = document.getElementById('managerBtnText');
+  btn.disabled = true;
+  btnText.innerHTML = '<span class="loader"></span>';
+
+  addActivityItem('🧠', 'Manager Général', task, 'pending', null);
+
+  try {
+    const res = await fetch('/api/manager', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({task}),
+    });
+    const data = await res.json();
+
+    if (data.error) throw new Error(data.error);
+
+    const panel = document.getElementById('managerResult');
+    document.getElementById('managerResultTask').textContent = `"${task.slice(0,60)}${task.length>60?'…':''}"`;
+    document.getElementById('managerResultMeta').textContent =
+      `Délégué à : ${(data.routed_to||[]).join(', ')} · ${data.response_time_ms}ms`;
+    document.getElementById('managerResultBody').innerHTML = mdToHtml(data.result || '');
+    panel.classList.add('visible');
+    panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+
+    updateLastActivity('🧠', 'Manager Général', task, true, data.response_time_ms);
+  } catch (e) {
+    updateLastActivity('🧠', 'Manager Général', task, false, null, e.message);
+  } finally {
+    btn.disabled = false;
+    btnText.textContent = 'Envoyer';
+  }
+}
+
+// ─── Show result ──────────────────────────────────────────────────────────────
+function showAgentResult(agent, task, data) {
+  const panel = document.getElementById('agentResult');
+  document.getElementById('agentResultEmoji').textContent = agent.emoji || '🤖';
+  document.getElementById('agentResultName').textContent = agent.name;
+  document.getElementById('agentResultTask').textContent = `"${task.slice(0,60)}${task.length>60?'…':''}"`;
+  document.getElementById('agentResultMeta').textContent = `${data.response_time_ms}ms`;
+  document.getElementById('agentResultBody').innerHTML = mdToHtml(data.result || '');
+  panel.classList.add('visible');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ─── Activity log ─────────────────────────────────────────────────────────────
+function addActivityItem(emoji, name, task, status, ms, error) {
+  activityItems.unshift({emoji, name, task, status, ms, error, time: Date.now()});
+  if (activityItems.length > 50) activityItems.pop();
+  renderActivity();
+  return activityItems.length - 1;
+}
+
+function updateLastActivity(emoji, name, task, success, ms, error) {
+  const idx = activityItems.findIndex(i => i.name === name && i.task === task && i.status === 'pending');
+  if (idx !== -1) {
+    activityItems[idx] = {emoji, name, task, status: success ? 'ok' : 'err', ms, error, time: Date.now()};
+    renderActivity();
+  }
+}
+
+function renderActivity() {
+  const log = document.getElementById('activityLog');
+  if (!activityItems.length) {
+    log.innerHTML = '<div class="empty-state">Aucune activité pour l\'instant.</div>';
+    return;
+  }
+  log.innerHTML = activityItems.slice(0, 20).map(item => {
+    const ico = item.status === 'ok' ? '✓' : item.status === 'err' ? '✕' : '…';
+    const cls = item.status === 'ok' ? 'activity-ok' : item.status === 'err' ? 'activity-err' : 'activity-pending';
+    const meta = item.status === 'pending' ? 'En cours…' :
+      item.status === 'ok' ? `${item.ms}ms` :
+      item.error ? item.error.slice(0,60) : 'Erreur';
+    const age = timeAgo(item.time);
+    return `<div class="activity-item">
+      <div class="activity-emoji">${item.emoji}</div>
+      <div class="activity-content">
+        <div class="activity-title">
+          <span>${item.name}</span>
+          <span class="${cls}" style="font-size:.7rem">${ico} ${meta}</span>
+        </div>
+        <div class="activity-task">${item.task.slice(0,100)}${item.task.length>100?'…':''}</div>
+      </div>
+      <div class="activity-time">${age}</div>
+    </div>`;
+  }).join('');
+}
+
+function clearLog() {
+  activityItems = [];
+  renderActivity();
+}
+
+function timeAgo(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 5) return 'maintenant';
+  if (s < 60) return `${s}s`;
+  if (s < 3600) return `${Math.floor(s/60)}m`;
+  return `${Math.floor(s/3600)}h`;
+}
+
+// ─── Minimal markdown → HTML ──────────────────────────────────────────────────
+function mdToHtml(md) {
+  return md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/^[-*] (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g,'<ul>$&</ul>')
+    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+    .replace(/`(.+?)`/g,'<code style="background:var(--bg3);padding:.1em .4em;border-radius:3px">$1</code>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+}
+
+// ─── Kick off ─────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+[build]
+  command   = "echo 'Silver Team ready'"
+  publish   = "public"
+  functions = "netlify/functions"
+
+[build.environment]
+  PYTHON_VERSION = "3.9"
+
+[functions]
+  included_files = ["config/**", "core/**", "agents/**"]
+
+# Increase timeout for AI calls (26s = Pro plan max, 10s free)
+[functions."run_task"]
+  timeout = 26
+
+[functions."run_manager"]
+  timeout = 26
+
+# Clean API routes
+[[redirects]]
+  from   = "/api/agents"
+  to     = "/.netlify/functions/agents"
+  status = 200
+
+[[redirects]]
+  from   = "/api/run"
+  to     = "/.netlify/functions/run_task"
+  status = 200
+
+[[redirects]]
+  from   = "/api/manager"
+  to     = "/.netlify/functions/run_manager"
+  status = 200
+
+# SPA fallback
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"

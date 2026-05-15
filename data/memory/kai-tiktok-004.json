@@ -1,0 +1,26 @@
+{
+  "agent_id": "kai-tiktok-004",
+  "created_at": "2026-05-15T15:55:21.252237",
+  "task_history": [
+    {
+      "timestamp": "2026-05-15T15:55:21.252975",
+      "task": "Write a TikTok video hook about fitness",
+      "result": "[MOCK — no ANTHROPIC_API_KEY] Kai (TikTok Manager) received task:\n\"Write a TikTok video hook about fitness\"\n\nMock response: Task acknowledged and logged. Set ANTHROPIC_API_KEY in your .env file to enable real AI responses.",
+      "success": true,
+      "response_time_ms": 0.011193000013008714,
+      "metadata": {
+        "routed_by": "general_manager",
+        "domain": "tiktok"
+      }
+    }
+  ],
+  "stats": {
+    "tasks_completed": 1,
+    "tasks_failed": 0,
+    "total_response_time_ms": 0.011193000013008714,
+    "last_active": "2026-05-15T15:55:21.252980"
+  },
+  "self_evaluation": null,
+  "custom": {},
+  "last_updated": "2026-05-15T15:55:21.252982"
+}

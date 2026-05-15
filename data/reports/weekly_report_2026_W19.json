@@ -1,0 +1,209 @@
+{
+  "report_type": "weekly",
+  "generated_at": "2026-05-15T15:53:54.803981",
+  "week_of": "2026-W19",
+  "total_agents": 8,
+  "agent_reports": [
+    {
+      "agent_id": "sophie-linkedin-001",
+      "agent_name": "Sophie",
+      "role": "LinkedIn Manager",
+      "report_generated_at": "2026-05-15T15:53:54.804050",
+      "stats": {
+        "tasks_completed": 1,
+        "tasks_failed": 0,
+        "total_response_time_ms": 0.05447699991054833,
+        "last_active": "2026-05-15T15:53:38.851739",
+        "success_rate": 100.0,
+        "avg_response_time_ms": 0.1,
+        "total_tasks": 1,
+        "agent_id": "sophie-linkedin-001",
+        "agent_name": "Sophie",
+        "role": "LinkedIn Manager",
+        "status": "active"
+      },
+      "narrative_summary": "[MOCK — no ANTHROPIC_API_KEY] Sophie (LinkedIn Manager) received task:\n\"Based on these recent tasks you have handled:\n- [2026-05-15] Draft a LinkedIn post about AI in digital marketing\n\nWrite a brief (3-5 bullet points) performance summary covering: key actions taken, out\"\n\nMock response: Task acknowledged and logged. Set ANTHROPIC_API_KEY in your .env file to enable real AI responses.",
+      "recent_tasks": [
+        {
+          "timestamp": "2026-05-15T15:53:38.851724",
+          "task": "Draft a LinkedIn post about AI in digital marketing",
+          "result": "[MOCK — no ANTHROPIC_API_KEY] Sophie (LinkedIn Manager) received task:\n\"Draft a LinkedIn post about AI in digital marketing\"\n\nMock response: Task acknowledged and logged. Set ANTHROPIC_API_KEY in your .env file to enable real AI responses.",
+          "success": true,
+          "response_time_ms": 0.05447699991054833,
+          "metadata": {}
+        }
+      ],
+      "self_evaluation": {
+        "timestamp": "2026-05-15T15:53:51.184040",
+        "strengths": [
+          "Unable to parse structured evaluation."
+        ],
+        "weaknesses": [],
+        "improvement_plan": [],
+        "overall_rating": "[MOCK — no ANTHROPIC_API_KEY] Sophie (LinkedIn Manager) received task:\n\"You are performing a self-evaluation as Sophie, LinkedIn Manager.\n\nHere are your last 1 task records:\n\n1. [2026-05-15] Task: Dra"
+      }
+    },
+    {
+      "agent_id": "marcus-facebook-002",
+      "agent_name": "Marcus",
+      "role": "Facebook Manager",
+      "report_generated_at": "2026-05-15T15:53:54.804060",
+      "stats": {
+        "tasks_completed": 0,
+        "tasks_failed": 0,
+        "total_response_time_ms": 0,
+        "last_active": null,
+        "success_rate": 0.0,
+        "avg_response_time_ms": 0.0,
+        "total_tasks": 0,
+        "agent_id": "marcus-facebook-002",
+        "agent_name": "Marcus",
+        "role": "Facebook Manager",
+        "status": "active"
+      },
+      "narrative_summary": "No tasks completed yet.",
+      "recent_tasks": [],
+      "self_evaluation": null
+    },
+    {
+      "agent_id": "lea-instagram-003",
+      "agent_name": "Léa",
+      "role": "Instagram Manager",
+      "report_generated_at": "2026-05-15T15:53:54.804066",
+      "stats": {
+        "tasks_completed": 0,
+        "tasks_failed": 0,
+        "total_response_time_ms": 0,
+        "last_active": null,
+        "success_rate": 0.0,
+        "avg_response_time_ms": 0.0,
+        "total_tasks": 0,
+        "agent_id": "lea-instagram-003",
+        "agent_name": "Léa",
+        "role": "Instagram Manager",
+        "status": "active"
+      },
+      "narrative_summary": "No tasks completed yet.",
+      "recent_tasks": [],
+      "self_evaluation": null
+    },
+    {
+      "agent_id": "kai-tiktok-004",
+      "agent_name": "Kai",
+      "role": "TikTok Manager",
+      "report_generated_at": "2026-05-15T15:53:54.804070",
+      "stats": {
+        "tasks_completed": 0,
+        "tasks_failed": 0,
+        "total_response_time_ms": 0,
+        "last_active": null,
+        "success_rate": 0.0,
+        "avg_response_time_ms": 0.0,
+        "total_tasks": 0,
+        "agent_id": "kai-tiktok-004",
+        "agent_name": "Kai",
+        "role": "TikTok Manager",
+        "status": "active"
+      },
+      "narrative_summary": "No tasks completed yet.",
+      "recent_tasks": [],
+      "self_evaluation": null
+    },
+    {
+      "agent_id": "alex-seo-005",
+      "agent_name": "Alex",
+      "role": "SEO Manager",
+      "report_generated_at": "2026-05-15T15:53:54.804074",
+      "stats": {
+        "tasks_completed": 0,
+        "tasks_failed": 0,
+        "total_response_time_ms": 0,
+        "last_active": null,
+        "success_rate": 0.0,
+        "avg_response_time_ms": 0.0,
+        "total_tasks": 0,
+        "agent_id": "alex-seo-005",
+        "agent_name": "Alex",
+        "role": "SEO Manager",
+        "status": "active"
+      },
+      "narrative_summary": "No tasks completed yet.",
+      "recent_tasks": [],
+      "self_evaluation": null
+    },
+    {
+      "agent_id": "nora-content-006",
+      "agent_name": "Nora",
+      "role": "Content Manager",
+      "report_generated_at": "2026-05-15T15:53:54.804086",
+      "stats": {
+        "tasks_completed": 0,
+        "tasks_failed": 0,
+        "total_response_time_ms": 0,
+        "last_active": null,
+        "success_rate": 0.0,
+        "avg_response_time_ms": 0.0,
+        "total_tasks": 0,
+        "agent_id": "nora-content-006",
+        "agent_name": "Nora",
+        "role": "Content Manager",
+        "status": "active"
+      },
+      "narrative_summary": "No tasks completed yet.",
+      "recent_tasks": [],
+      "self_evaluation": null
+    },
+    {
+      "agent_id": "dani-analytics-007",
+      "agent_name": "Dani",
+      "role": "Analytics Manager",
+      "report_generated_at": "2026-05-15T15:53:54.804091",
+      "stats": {
+        "tasks_completed": 0,
+        "tasks_failed": 0,
+        "total_response_time_ms": 0,
+        "last_active": null,
+        "success_rate": 0.0,
+        "avg_response_time_ms": 0.0,
+        "total_tasks": 0,
+        "agent_id": "dani-analytics-007",
+        "agent_name": "Dani",
+        "role": "Analytics Manager",
+        "status": "active"
+      },
+      "narrative_summary": "No tasks completed yet.",
+      "recent_tasks": [],
+      "self_evaluation": null
+    },
+    {
+      "agent_id": "eli-email-008",
+      "agent_name": "Eli",
+      "role": "Email Marketing Manager",
+      "report_generated_at": "2026-05-15T15:53:54.804106",
+      "stats": {
+        "tasks_completed": 0,
+        "tasks_failed": 0,
+        "total_response_time_ms": 0,
+        "last_active": null,
+        "success_rate": 0.0,
+        "avg_response_time_ms": 0.0,
+        "total_tasks": 0,
+        "agent_id": "eli-email-008",
+        "agent_name": "Eli",
+        "role": "Email Marketing Manager",
+        "status": "active"
+      },
+      "narrative_summary": "No tasks completed yet.",
+      "recent_tasks": [],
+      "self_evaluation": null
+    }
+  ],
+  "manager_analysis": "[MOCK — no ANTHROPIC_API_KEY] General Manager (Team Orchestrator) received task:\n\"Weekly performance summary for your team:\n\n**Sophie** (LinkedIn Manager): 1 tasks, 100.0% success rate\n**Marcus** (Facebook Manager): 0 tasks, 0.0% success rate\n**Léa** (Instagram Manager): 0 tasks, 0\"\n\nMock response: Task acknowledged and logged. Set ANTHROPIC_API_KEY in your .env file to enable real AI responses.",
+  "team_stats": {
+    "total_tasks": 1,
+    "total_success": 1,
+    "total_failed": 0,
+    "team_success_rate": 100.0,
+    "active_agents": 8
+  }
+}

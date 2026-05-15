@@ -1,0 +1,22 @@
+{
+  "agent_id": "alex-seo-005",
+  "agent_name": "Alex",
+  "role": "SEO Manager",
+  "report_generated_at": "2026-05-15T15:54:40.706771",
+  "stats": {
+    "tasks_completed": 0,
+    "tasks_failed": 0,
+    "total_response_time_ms": 0,
+    "last_active": null,
+    "success_rate": 0.0,
+    "avg_response_time_ms": 0.0,
+    "total_tasks": 0,
+    "agent_id": "alex-seo-005",
+    "agent_name": "Alex",
+    "role": "SEO Manager",
+    "status": "active"
+  },
+  "narrative_summary": "No tasks completed yet.",
+  "recent_tasks": [],
+  "self_evaluation": null
+}

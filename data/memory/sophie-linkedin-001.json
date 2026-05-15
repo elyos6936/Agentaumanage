@@ -1,0 +1,53 @@
+{
+  "agent_id": "sophie-linkedin-001",
+  "created_at": "2026-05-15T15:53:38.847106",
+  "task_history": [
+    {
+      "timestamp": "2026-05-15T15:53:38.851724",
+      "task": "Draft a LinkedIn post about AI in digital marketing",
+      "result": "[MOCK — no ANTHROPIC_API_KEY] Sophie (LinkedIn Manager) received task:\n\"Draft a LinkedIn post about AI in digital marketing\"\n\nMock response: Task acknowledged and logged. Set ANTHROPIC_API_KEY in your .env file to enable real AI responses.",
+      "success": true,
+      "response_time_ms": 0.05447699991054833,
+      "metadata": {}
+    },
+    {
+      "timestamp": "2026-05-15T15:54:37.197974",
+      "task": "Plan a full cross-channel campaign for a B2B SaaS product launch",
+      "result": "[MOCK — no ANTHROPIC_API_KEY] Sophie (LinkedIn Manager) received task:\n\"Plan a full cross-channel campaign for a B2B SaaS product launch\"\n\nMock response: Task acknowledged and logged. Set ANTHROPIC_API_KEY in your .env file to enable real AI responses.",
+      "success": true,
+      "response_time_ms": 0.017899999977089465,
+      "metadata": {
+        "routed_by": "general_manager",
+        "domain": "linkedin"
+      }
+    },
+    {
+      "timestamp": "2026-05-15T15:54:49.953142",
+      "task": "Draft a LinkedIn post about: AI in marketing\n\nTone: thought leadership\nRequirements:\n- Hook in the first line\n- 150-300 words\n- 3-5 relevant hashtags\n- Clear call-to-action\n- Formatted for LinkedIn (line breaks, emojis sparingly)",
+      "result": "[MOCK — no ANTHROPIC_API_KEY] Sophie (LinkedIn Manager) received task:\n\"Draft a LinkedIn post about: AI in marketing\n\nTone: thought leadership\nRequirements:\n- Hook in the first line\n- 150-300 words\n- 3-5 relevant hashtags\n- Clear call-to-action\n- Formatted for LinkedIn (l\"\n\nMock response: Task acknowledged and logged. Set ANTHROPIC_API_KEY in your .env file to enable real AI responses.",
+      "success": true,
+      "response_time_ms": 0.01516600011382252,
+      "metadata": {
+        "type": "draft_post",
+        "topic": "AI in marketing"
+      }
+    }
+  ],
+  "stats": {
+    "tasks_completed": 3,
+    "tasks_failed": 0,
+    "total_response_time_ms": 0.08754300000146031,
+    "last_active": "2026-05-15T15:54:49.953149"
+  },
+  "self_evaluation": {
+    "timestamp": "2026-05-15T15:53:51.184040",
+    "strengths": [
+      "Unable to parse structured evaluation."
+    ],
+    "weaknesses": [],
+    "improvement_plan": [],
+    "overall_rating": "[MOCK — no ANTHROPIC_API_KEY] Sophie (LinkedIn Manager) received task:\n\"You are performing a self-evaluation as Sophie, LinkedIn Manager.\n\nHere are your last 1 task records:\n\n1. [2026-05-15] Task: Dra"
+  },
+  "custom": {},
+  "last_updated": "2026-05-15T15:54:49.953150"
+}

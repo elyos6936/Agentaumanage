@@ -266,33 +266,41 @@ let agents = [];
 let currentAgent = null;
 let activityItems = [];
 
+const AGENT_EMOJIS = {
+  linkedin:'💼', facebook:'📘', instagram:'📸', tiktok:'🎵',
+  seo:'🔍', content:'✍️', analytics:'📊', email:'📧',
+};
+
+function assignEmoji(agent) {
+  const role = (agent.role || '').toLowerCase();
+  for (const [key, emoji] of Object.entries(AGENT_EMOJIS)) {
+    if (role.includes(key)) return emoji;
+  }
+  return '🤖';
+}
+
 // ─── Init ─────────────────────────────────────────────────────────────────────
 async function init() {
   try {
-    const res = await fetch('/api/agents');
+    // agents.json is a static file copied to public/ by the Netlify build command
+    const res = await fetch('/agents.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    agents = data.agents || [];
+    agents = (data.agents || []).map(a => ({ ...a, emoji: assignEmoji(a) }));
 
     document.getElementById('agentCount').textContent = agents.length;
     renderAgents(agents);
 
     const pill = document.getElementById('headerStatus');
     const pillText = document.getElementById('headerStatusText');
-
-    if (!data.api_key_configured) {
-      document.getElementById('apiBanner').classList.remove('hidden');
-      pill.classList.add('warn');
-      pill.classList.remove('');
-      pillText.textContent = `${agents.length} agents — API non configurée`;
-    } else {
-      pill.classList.remove('warn');
-      pillText.textContent = `${agents.length} agents actifs`;
-    }
+    pill.classList.remove('warn');
+    pillText.textContent = `${agents.length} agents prêts`;
   } catch (e) {
     document.getElementById('agentsGrid').innerHTML =
       `<div class="agent-card" style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--red)">
         ❌ Impossible de charger les agents.<br><small>${e.message}</small>
       </div>`;
+    document.getElementById('headerStatusText').textContent = 'Erreur de chargement';
   }
 }
 
@@ -373,7 +381,8 @@ async function submitTask() {
     const res = await fetch('/api/run', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({agent_id: currentAgent.id, task}),
+      // Send the full agent object — the function doesn't need to read any files
+      body: JSON.stringify({agent: currentAgent, task}),
     });
     const data = await res.json();
 
@@ -409,7 +418,8 @@ async function runManager() {
     const res = await fetch('/api/manager', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({task}),
+      // Send agents list so the function can route without reading files
+      body: JSON.stringify({task, agents}),
     });
     const data = await res.json();
 

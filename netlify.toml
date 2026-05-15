@@ -1,27 +1,16 @@
 [build]
-  command   = "echo 'Silver Team ready'"
+  # Copy agents config to public/ so the frontend can fetch it as a static file
+  command   = "mkdir -p public && cp config/agents.json public/agents.json"
   publish   = "public"
   functions = "netlify/functions"
 
-[build.environment]
-  PYTHON_VERSION = "3.9"
-
-[functions]
-  included_files = ["config/**", "core/**", "agents/**"]
-
-# Increase timeout for AI calls (26s = Pro plan max, 10s free)
 [functions."run_task"]
   timeout = 26
 
 [functions."run_manager"]
   timeout = 26
 
-# Clean API routes
-[[redirects]]
-  from   = "/api/agents"
-  to     = "/.netlify/functions/agents"
-  status = 200
-
+# API routes → serverless functions
 [[redirects]]
   from   = "/api/run"
   to     = "/.netlify/functions/run_task"

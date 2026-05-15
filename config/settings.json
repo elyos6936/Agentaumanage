@@ -1,0 +1,36 @@
+{
+  "system": {
+    "name": "Silver Team",
+    "version": "1.0.0",
+    "description": "Multi-agent marketing team management system",
+    "timezone": "UTC"
+  },
+  "claude": {
+    "model": "claude-sonnet-4-6",
+    "max_tokens": 4096,
+    "temperature": 0.7,
+    "retry_attempts": 3,
+    "retry_delay_seconds": 2
+  },
+  "scheduler": {
+    "weekly_report_day": "monday",
+    "weekly_report_hour": 9,
+    "weekly_report_minute": 0,
+    "daily_stats_hour": 23,
+    "daily_stats_minute": 30,
+    "enabled": true
+  },
+  "reports": {
+    "output_format": ["markdown", "json"],
+    "keep_last_n_reports": 52,
+    "include_self_evaluation": true
+  },
+  "memory": {
+    "max_task_history": 100,
+    "persist_immediately": true
+  },
+  "dashboard": {
+    "refresh_interval_seconds": 5,
+    "theme": "dark"
+  }
+}

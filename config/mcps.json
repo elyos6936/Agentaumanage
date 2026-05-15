@@ -4,7 +4,11 @@
       "name": "filesystem",
       "description": "Access to local filesystem for reading/writing files",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/tmp"
+      ],
       "env_vars": {},
       "enabled": false
     },
@@ -12,7 +16,10 @@
       "name": "brave-search",
       "description": "Web search via Brave Search API",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
       "env_vars": {
         "BRAVE_API_KEY": "${BRAVE_API_KEY}"
       },
@@ -22,7 +29,10 @@
       "name": "github",
       "description": "GitHub repository management and code operations",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
       "env_vars": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
       },
@@ -32,7 +42,10 @@
       "name": "postgres",
       "description": "PostgreSQL database access for analytics data",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres"
+      ],
       "env_vars": {
         "POSTGRES_CONNECTION_STRING": "${POSTGRES_URL}"
       },
